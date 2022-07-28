@@ -399,12 +399,16 @@ func createMachineDeploymentFromGKENodePoll(np *container.NodePool, readyReplica
 		}
 	}
 
-	if np.Conditions != nil && len(np.Conditions) > 0 {
-		fmt.Println("//////////////////////////////////////////4", np.Conditions[1].Message)
+	var statusMessage string
+	if np.StatusMessage == "" {
+		if np.Conditions != nil && len(np.Conditions) > 0 {
+			statusMessage = np.Conditions[1].Message
+		}
 	}
+
 	md.Phase = apiv2.ExternalClusterMDPhase{
 		State:         gkeprovider.ConvertMDStatus(np.Status),
-		StatusMessage: np.StatusMessage,
+		StatusMessage: statusMessage,
 	}
 
 	return md

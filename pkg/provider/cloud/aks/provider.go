@@ -197,6 +197,8 @@ func ConvertMDStatus(provisioningState string, powerState armcontainerservice.Co
 		return apiv2.ErrorExternalClusterMDState
 	case provisioningState == "Deleting":
 		return apiv2.DeletingExternalClusterMDState
+	// "Upgrading" indicates Kubernetes version upgrade.
+	// "Updating" indicates MachineDeployment Replica Scale.
 	case provisioningState == "Upgrading" || provisioningState == "Updating" || provisioningState == "Scaling":
 		return apiv2.ReconcilingExternalClusterMDState
 	default:
