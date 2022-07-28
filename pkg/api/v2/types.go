@@ -406,33 +406,56 @@ type ExternalCluster struct {
 }
 
 type ExternalClusterState string
+type ExternalClusterMDState string
 
 const (
-	// PROVISIONING state indicates the cluster is being created.
-	PROVISIONING ExternalClusterState = "Provisioning"
+	// ProvisioningExternalClusterState state indicates the cluster is being created.
+	ProvisioningExternalClusterState ExternalClusterState = "Provisioning"
 
-	// STOPPED state indicates the cluster is stopped, this state is specific to aks clusters.
-	STOPPED ExternalClusterState = "Stopped"
+	// StoppedExternalClusterState state indicates the cluster is stopped, this state is specific to AKS clusters.
+	StoppedExternalClusterState ExternalClusterState = "Stopped"
 
-	// STOPPING state indicates the cluster is stopping, this state is specific to aks clusters.
-	STOPPING ExternalClusterState = "Stopping"
+	// StoppingExternalClusterState state indicates the cluster is stopping, this state is specific to AKS clusters.
+	StoppingExternalClusterState ExternalClusterState = "Stopping"
 
-	// RUNNING state indicates the cluster has been created and is fully usable.
-	RUNNING ExternalClusterState = "Running"
+	// RunningExternalClusterState state indicates the cluster has been created and is fully usable.
+	RunningExternalClusterState ExternalClusterState = "Running"
 
-	// RECONCILING state indicates that some work is actively being done on the cluster, such as upgrading the master or
+	// ReconcilingExternalClusterState state indicates that some work is actively being done on the cluster, such as upgrading the master or
 	// node software. Details can be found in the `StatusMessage` field.
-	RECONCILING ExternalClusterState = "Reconciling"
+	ReconcilingExternalClusterState ExternalClusterState = "Reconciling"
 
-	// DELETING state indicates the cluster is being deleted.
-	DELETING ExternalClusterState = "Deleting"
+	// DeletingExternalClusterState state indicates the cluster is being deleted.
+	DeletingExternalClusterState ExternalClusterState = "Deleting"
 
-	// UNKNOWN Not set.
-	UNKNOWN ExternalClusterState = "Unknown"
+	// UnknownExternalClusterState indicates undefined state.
+	UnknownExternalClusterState ExternalClusterState = "Unknown"
 
-	// ERROR state indicates the cluster is unusable. It will be automatically deleted. Details can be found in the
+	// ErrorExternalClusterState state indicates the cluster is unusable. It will be automatically deleted. Details can be found in the
 	// `statusMessage` field.
-	ERROR ExternalClusterState = "Error"
+	ErrorExternalClusterState ExternalClusterState = "Error"
+)
+
+const (
+	// ProvisioningExternalClusterMDState state indicates the cluster machine dedeployment is being created.
+	ProvisioningExternalClusterMDState ExternalClusterMDState = "Provisioning"
+
+	// RunningExternalClusterMDState state indicates the cluster machine dedeployment has been created and is fully usable.
+	RunningExternalClusterMDState ExternalClusterMDState = "Running"
+
+	// ReconcilingExternalClusterMDState state indicates that some work is actively being done on the machine dedeployment, such as upgrading the master or
+	// node software. Details can be found in the `StatusMessage` field.
+	ReconcilingExternalClusterMDState ExternalClusterMDState = "Reconciling"
+
+	// DeletingExternalClusterMDState state indicates the machine dedeployment is being deleted.
+	DeletingExternalClusterMDState ExternalClusterMDState = "Deleting"
+
+	// UnknownExternalClusterMDState indicates undefined state.
+	UnknownExternalClusterMDState ExternalClusterMDState = "Unknown"
+
+	// ErrorExternalClusterMDState state indicates the machine dedeployment is unusable. It will be automatically deleted. Details can be found in the
+	// `statusMessage` field.
+	ErrorExternalClusterMDState ExternalClusterMDState = "Error"
 )
 
 // ExternalClusterStatus defines the external cluster status.
@@ -748,8 +771,8 @@ type ExternalClusterMachineDeployment struct {
 
 // ExternalClusterMDPhase defines the external cluster machinedeployment phase.
 type ExternalClusterMDPhase struct {
-	State         ExternalClusterState `json:"state"`
-	StatusMessage string               `json:"statusMessage,omitempty"`
+	State         ExternalClusterMDState `json:"state"`
+	StatusMessage string                 `json:"statusMessage,omitempty"`
 }
 
 // GKECluster represents a object of GKE cluster.

@@ -146,7 +146,7 @@ func GetClusterStatus(ctx context.Context, secretKeySelector provider.SecretKeyS
 	if err != nil {
 		return nil, err
 	}
-	state := apiv2.UNKNOWN
+	state := apiv2.UnknownExternalClusterState
 	if aksCluster.Properties != nil {
 		var powerState armcontainerservice.Code
 		var provisioningState string
@@ -167,23 +167,40 @@ func GetClusterStatus(ctx context.Context, secretKeySelector provider.SecretKeyS
 func ConvertStatus(provisioningState string, powerState armcontainerservice.Code) apiv2.ExternalClusterState {
 	switch {
 	case provisioningState == "Creating":
-		return apiv2.PROVISIONING
+		return apiv2.ProvisioningExternalClusterState
 	case provisioningState == "Succeeded" && powerState == "Running":
-		return apiv2.RUNNING
+		return apiv2.RunningExternalClusterState
 	case provisioningState == "Starting":
-		return apiv2.PROVISIONING
+		return apiv2.ProvisioningExternalClusterState
 	case provisioningState == "Stopping":
-		return apiv2.STOPPING
+		return apiv2.StoppingExternalClusterState
 	case provisioningState == "Succeeded" && powerState == "Stopped":
-		return apiv2.STOPPED
+		return apiv2.StoppedExternalClusterState
 	case provisioningState == "Failed":
-		return apiv2.ERROR
+		return apiv2.ErrorExternalClusterState
 	case provisioningState == "Deleting":
-		return apiv2.DELETING
+		return apiv2.DeletingExternalClusterState
 	case provisioningState == "Upgrading":
-		return apiv2.RECONCILING
+		return apiv2.ReconcilingExternalClusterState
 	default:
-		return apiv2.UNKNOWN
+		return apiv2.UnknownExternalClusterState
+	}
+}
+
+func ConvertMDStatus(provisioningState string, powerState armcontainerservice.Code) apiv2.ExternalClusterMDState {
+	switch {
+	case provisioningState == "Creating":
+		return apiv2.ProvisioningExternalClusterMDState
+	case provisioningState == "Succeeded" && powerState == "Running":
+		return apiv2.RunningExternalClusterMDState
+	case provisioningState == "Failed":
+		return apiv2.ErrorExternalClusterMDState
+	case provisioningState == "Deleting":
+		return apiv2.DeletingExternalClusterMDState
+	case provisioningState == "Upgrading" || provisioningState == "Updating" || provisioningState == "Scaling":
+		return apiv2.ReconcilingExternalClusterMDState
+	default:
+		return apiv2.UnknownExternalClusterMDState
 	}
 }
 

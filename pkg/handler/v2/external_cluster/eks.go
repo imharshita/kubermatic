@@ -555,7 +555,7 @@ func createMachineDeploymentFromEKSNodePool(nodeGroup *eks.Nodegroup, readyRepli
 
 	if nodeGroup.Status != nil {
 		md.Phase = apiv2.ExternalClusterMDPhase{
-			State: eksprovider.ConvertStatus(*nodeGroup.Status),
+			State: eksprovider.ConvertMDStatus(*nodeGroup.Status),
 		}
 	}
 
@@ -824,7 +824,7 @@ func createEKSNodePool(clusterCloudSpec *kubermaticv1.ExternalClusterCloudSpec, 
 	if err != nil {
 		return nil, err
 	}
-	machineDeployment.Phase = apiv2.ExternalClusterMDPhase{State: apiv2.PROVISIONING}
+	machineDeployment.Phase = apiv2.ExternalClusterMDPhase{State: apiv2.ProvisioningExternalClusterMDState}
 
 	return &machineDeployment, nil
 }

@@ -187,21 +187,40 @@ func GetClusterStatus(secretKeySelector provider.SecretKeySelectorValueFunc, clo
 func ConvertStatus(status string) apiv2.ExternalClusterState {
 	switch status {
 	case "CREATING":
-		return apiv2.PROVISIONING
+		return apiv2.ProvisioningExternalClusterState
+	case "PENDING":
+		return apiv2.ProvisioningExternalClusterState
 	case "ACTIVE":
-		return apiv2.RUNNING
+		return apiv2.RunningExternalClusterState
 	case "UPDATING":
-		return apiv2.RECONCILING
+		return apiv2.ReconcilingExternalClusterState
 	case "DELETING":
-		return apiv2.DELETING
-	case "CREATE_FAILED":
-		return apiv2.ERROR
-	case "DELETE_FAILED":
-		return apiv2.ERROR
+		return apiv2.DeletingExternalClusterState
 	case "FAILED":
-		return apiv2.ERROR
+		return apiv2.ErrorExternalClusterState
 	default:
-		return apiv2.UNKNOWN
+		return apiv2.UnknownExternalClusterState
+	}
+}
+
+func ConvertMDStatus(status string) apiv2.ExternalClusterMDState {
+	switch status {
+	case "CREATING":
+		return apiv2.ProvisioningExternalClusterMDState
+	case "ACTIVE":
+		return apiv2.RunningExternalClusterMDState
+	case "UPDATING":
+		return apiv2.ReconcilingExternalClusterMDState
+	case "DELETING":
+		return apiv2.DeletingExternalClusterMDState
+	case "CREATE_FAILED":
+		return apiv2.ErrorExternalClusterMDState
+	case "DELETE_FAILED":
+		return apiv2.ErrorExternalClusterMDState
+	case "DEGRADED":
+		return apiv2.ErrorExternalClusterMDState
+	default:
+		return apiv2.UnknownExternalClusterMDState
 	}
 }
 
